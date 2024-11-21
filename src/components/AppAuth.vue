@@ -1,149 +1,88 @@
 <template>
-  <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="modal">
-    <div
-      class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
-    >
-      <div class="fixed inset-0 transition-opacity">
-        <div class="absolute inset-0 bg-gray-800 opacity-75"></div>
-      </div>
-
-      <!-- This element is to trick the browser into centering the modal contents. -->
-      <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-
+  <!-- Auth Modal -->
+  <transition name="fade">
+    <div v-if="modalStore.isOpen" class="fixed inset-0 z-10 overflow-y-auto" id="modal">
       <div
-        class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+        class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0"
       >
-        <!-- Add margin if you want to see some of the overlay behind the modal-->
-        <div class="py-4 text-left px-6">
-          <!--Title-->
-          <div class="flex justify-between items-center pb-4">
-            <p class="text-2xl font-bold">Your Account</p>
-            <!-- Modal Close Button -->
-            <div class="modal-close cursor-pointer z-50">
-              <i class="fas fa-times"></i>
+        <div class="fixed inset-0 transition-opacity">
+          <div class="absolute inset-0 bg-gray-800 opacity-75"></div>
+        </div>
+
+        <!-- This element is to trick the browser into centering the modal contents. -->
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+
+        <div
+          class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+        >
+          <!-- Add margin if you want to see some of the overlay behind the modal-->
+          <div class="px-6 py-4 text-left">
+            <!--Title-->
+            <div class="flex items-center justify-between pb-4">
+              <p class="text-2xl font-bold">Your Account</p>
+              <!-- Modal Close Button -->
+              <div class="z-50 cursor-pointer modal-close" @click="modalStore.toggle">
+                <i class="fas fa-times"></i>
+              </div>
             </div>
+
+            <!-- Tabs -->
+            <ul class="flex flex-wrap mb-4">
+              <li class="flex-auto text-center">
+                <a
+                  class="block px-4 py-3 transition rounded"
+                  href="#"
+                  @click.prevent="tab = 'login'"
+                  :class="{
+                    'text-white bg-blue-600 rounded': tab === 'login',
+                    'hover:text-blue-600': tab === 'register',
+                  }"
+                >
+                  Login
+                </a>
+              </li>
+              <li class="flex-auto text-center">
+                <a
+                  class="block px-4 py-3 transition rounded"
+                  href="#"
+                  @click.prevent="tab = 'register'"
+                  :class="{
+                    'text-white bg-blue-600 rounded': tab === 'register',
+                    'hover:text-blue-600': tab === 'login',
+                  }"
+                >
+                  Register
+                </a>
+              </li>
+            </ul>
+
+            <!-- Login Form -->
+            <LoginForm v-if="tab === 'login'" />
+            <!-- Registration Form -->
+            <RegistrationForm v-else />
           </div>
-
-          <!-- Tabs -->
-          <ul class="flex flex-wrap mb-4">
-            <li class="flex-auto text-center">
-              <a
-                class="block rounded py-3 px-4 transition hover:text-white text-white bg-blue-600"
-                href="#"
-                >Login</a
-              >
-            </li>
-            <li class="flex-auto text-center">
-              <a class="block rounded py-3 px-4 transition" href="#">Register</a>
-            </li>
-          </ul>
-
-          <!-- Login Form -->
-          <form>
-            <!-- Email -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Email</label>
-              <input
-                type="email"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Enter Email"
-              />
-            </div>
-            <!-- Password -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Password</label>
-              <input
-                type="password"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Password"
-              />
-            </div>
-            <button
-              type="submit"
-              class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700"
-            >
-              Submit
-            </button>
-          </form>
-          <!-- Registration Form -->
-          <form>
-            <!-- Name -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Name</label>
-              <input
-                type="text"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Enter Name"
-              />
-            </div>
-            <!-- Email -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Email</label>
-              <input
-                type="email"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Enter Email"
-              />
-            </div>
-            <!-- Age -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Age</label>
-              <input
-                type="number"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-              />
-            </div>
-            <!-- Password -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Password</label>
-              <input
-                type="password"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Password"
-              />
-            </div>
-            <!-- Confirm Password -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Confirm Password</label>
-              <input
-                type="password"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Confirm Password"
-              />
-            </div>
-            <!-- Country -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Country</label>
-              <select
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-              >
-                <option value="USA">USA</option>
-                <option value="Mexico">Mexico</option>
-                <option value="Germany">Germany</option>
-              </select>
-            </div>
-            <!-- TOS -->
-            <div class="mb-3 pl-6">
-              <input type="checkbox" class="w-4 h-4 float-left -ml-6 mt-1 rounded" />
-              <label class="inline-block">Accept terms of service</label>
-            </div>
-            <button
-              type="submit"
-              class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700"
-            >
-              Submit
-            </button>
-          </form>
         </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
-<script>
-export default {
-  name: 'AppAuth',
-}
+<script setup>
+import { ref } from 'vue'
+import { useModalStore } from '@/stores/modalStore'
+import LoginForm from './LoginForm.vue'
+import RegistrationForm from './RegistrationForm.vue'
+
+const modalStore = useModalStore()
+const tab = ref('login')
 </script>
 
-<style></style>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
+}
+</style>
