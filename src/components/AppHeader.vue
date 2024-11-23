@@ -8,9 +8,14 @@
         <!-- Primary Navigation -->
         <ul class="flex flex-row mt-1">
           <!-- Navigation Links -->
-          <li>
+          <li v-if="!userStore.userLoggedIn">
             <a class="px-2 text-white" href="#" @click.prevent="modalStore.toggle"
               >Login / Register</a
+            >
+          </li>
+          <li v-else>
+            <a class="px-2 text-white" href="#" @click.prevent="userStore.toggleUserLoggedIn"
+              >Logout</a
             >
           </li>
           <li>
@@ -24,6 +29,8 @@
 
 <script setup>
 import { useModalStore } from '@/stores/modalStore'
+import { useUserStore } from '@/stores/userStore'
 
 const modalStore = useModalStore()
+const userStore = useUserStore()
 </script>

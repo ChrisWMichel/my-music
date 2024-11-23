@@ -8,11 +8,11 @@
       {{ login_alert_text }}
     </div>
     <transition name="fade">
-      <vee-form :validation-schema="loginSchema" @submit="loginSubmit">
+      <Form :validation-schema="loginSchema" @submit="loginSubmit">
         <!-- Email -->
         <div class="mb-3">
           <label class="inline-block mb-2">Email</label>
-          <vee-field
+          <Field
             name="email"
             type="email"
             class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
@@ -23,7 +23,7 @@
         <!-- Password -->
         <div class="mb-3">
           <label class="inline-block mb-2">Password</label>
-          <vee-field
+          <Field
             name="password"
             type="password"
             class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
@@ -38,17 +38,21 @@
         >
           Submit
         </button>
-      </vee-form>
+      </Form>
     </transition>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive, defineComponent } from 'vue'
-
+import { useUserStore } from '@/stores/userStore'
+import { Form, Field, ErrorMessage } from 'vee-validate'
 defineComponent({
   name: 'LoginForm',
 })
+
+const userStore = useUserStore()
+
 let login_in_submission = ref(false)
 let login_show_alert = ref(false)
 const login_alert_variant = ref('bg-blue-500')
@@ -64,17 +68,24 @@ const loginSchema = reactive({
   },
 })
 
-const loginSubmit = (values) => {
+const loginSubmit = async (values) => {
   login_in_submission.value = true
   login_show_alert.value = true
   login_alert_variant.value = 'bg-blue-500'
   login_alert_text.value = 'Login in progress...'
 
-  login_alert_variant.value = 'bg-green-500'
-  login_alert_text.value = 'Login successful!'
-  console.log('Logging in...')
-  console.log(values)
-  //login_in_progress.value = false
+  try {
+    const userCredential = await userStore.authenticateUser(values.email, values.password)
+    login_alert_variant.value = 'bg-green-500'
+    login_alert_text.value = 'Login successful!'
+    console.log('User logged in:', userCredential.user)
+  } catch (error) {
+    login_alert_variant.value = 'bg-red-500'
+    login_alert_text.value = 'Login failed. Please try again.'
+    console.error('Error logging in:', error)
+  } finally {
+    login_in_submission.value = false
+  }
 }
 </script>
 

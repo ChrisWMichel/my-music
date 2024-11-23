@@ -16,6 +16,7 @@
   "dependencies": {
     "@vee-validate/rules": "^4.14.7",
     "autoprefixer": "^10.4.20",
+    "firebase": "^11.0.2",
     "pinia": "^2.2.6",
     "postcss": "^8.4.49",
     "vee-validate": "^4.14.7",
