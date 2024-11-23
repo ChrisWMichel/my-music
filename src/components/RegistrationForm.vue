@@ -107,9 +107,13 @@
 <script setup>
 import { reactive, ref, defineComponent } from 'vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
+import { useUserStore } from '@/stores/userStore'
+
 defineComponent({
   name: 'RegistrationForm',
 })
+
+const userStore = useUserStore()
 
 let reg_in_progress = ref(false)
 let reg_show_alert = ref(false)
@@ -154,19 +158,25 @@ const userData = reactive({
   tos: '',
 })
 
-const registerSubmit = (values) => {
+const registerSubmit = async (values) => {
   reg_show_alert.value = true
   reg_in_progress.value = true
   reg_alert_variant.value = 'bg-blue-500'
   reg_alert_text.value = 'Please wait while we process your registration'
-  setTimeout(() => {
+
+  try {
+    await userStore.register(values)
+    //console.log('User signed up:', userCredential.user)
+  } catch (error) {
+    console.error('Error signing up:', error)
     reg_in_progress.value = false
-    reg_show_alert.value = false
-  }, 3000)
+    reg_alert_variant.value = 'bg-red-500'
+    reg_alert_text.value = 'An error occurred while processing your registration'
+    return
+  }
 
   reg_alert_variant.value = 'bg-green-500'
   reg_alert_text.value = 'Registration successful!'
-  console.log(values)
 }
 </script>
 
