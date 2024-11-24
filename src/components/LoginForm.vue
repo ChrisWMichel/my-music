@@ -46,12 +46,14 @@
 <script setup>
 import { ref, reactive, defineComponent } from 'vue'
 import { useUserStore } from '@/stores/userStore'
+import { useModalStore } from '@/stores/modalStore'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 defineComponent({
   name: 'LoginForm',
 })
 
 const userStore = useUserStore()
+const modalStore = useModalStore()
 
 let login_in_submission = ref(false)
 let login_show_alert = ref(false)
@@ -78,6 +80,7 @@ const loginSubmit = async (values) => {
     const userCredential = await userStore.authenticateUser(values.email, values.password)
     login_alert_variant.value = 'bg-green-500'
     login_alert_text.value = 'Login successful!'
+    window.location.reload()
     console.log('User logged in:', userCredential.user)
   } catch (error) {
     login_alert_variant.value = 'bg-red-500'
@@ -85,6 +88,7 @@ const loginSubmit = async (values) => {
     console.error('Error logging in:', error)
   } finally {
     login_in_submission.value = false
+    modalStore.toggle()
   }
 }
 </script>

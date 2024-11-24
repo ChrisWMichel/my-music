@@ -108,12 +108,14 @@
 import { reactive, ref, defineComponent } from 'vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import { useUserStore } from '@/stores/userStore'
+import { useModalStore } from '@/stores/modalStore'
 
 defineComponent({
   name: 'RegistrationForm',
 })
 
 const userStore = useUserStore()
+const modalStore = useModalStore()
 
 let reg_in_progress = ref(false)
 let reg_show_alert = ref(false)
@@ -177,6 +179,7 @@ const registerSubmit = async (values) => {
 
   reg_alert_variant.value = 'bg-green-500'
   reg_alert_text.value = 'Registration successful!'
+  modalStore.toggle()
 }
 </script>
 
