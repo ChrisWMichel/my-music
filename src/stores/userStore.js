@@ -70,6 +70,15 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  const signOut = async () => {
+    try {
+      await auth.signOut()
+      this.setUserLoggedIn(false)
+    } catch (error) {
+      console.error('Error during sign out:', error)
+    }
+  }
+
   return {
     userLoggedIn,
     setUserLoggedIn,
@@ -77,5 +86,6 @@ export const useUserStore = defineStore('user', () => {
     register,
     getUserDocument,
     authenticateUser,
+    signOut,
   }
 })
