@@ -9,7 +9,7 @@ import {
 } from 'firebase/auth'
 
 export const useUserStore = defineStore('user', () => {
-  let userLoggedIn = ref(false)
+  const userLoggedIn = ref(false)
 
   const setUserLoggedIn = (isLoggedIn) => {
     userLoggedIn.value = isLoggedIn
@@ -48,7 +48,7 @@ export const useUserStore = defineStore('user', () => {
       const userDoc = await getDoc(userDocRef)
 
       if (userDoc.exists()) {
-        console.log('User document data:', userDoc.data())
+        //console.log('User document data:', userDoc.data())
         return userDoc.data()
       } else {
         console.log('No such document!')
@@ -73,7 +73,7 @@ export const useUserStore = defineStore('user', () => {
   const signOut = async () => {
     try {
       await auth.signOut()
-      this.setUserLoggedIn(false)
+      setUserLoggedIn(false)
     } catch (error) {
       console.error('Error during sign out:', error)
     }
