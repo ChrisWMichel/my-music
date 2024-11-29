@@ -10,9 +10,14 @@ import {
 
 export const useUserStore = defineStore('user', () => {
   const userLoggedIn = ref(false)
+  const userId = ref(null)
 
   const setUserLoggedIn = (isLoggedIn) => {
     userLoggedIn.value = isLoggedIn
+  }
+
+  const setUserId = (uid) => {
+    userId.value = uid
   }
 
   const toggleUserLoggedIn = () => {
@@ -37,6 +42,7 @@ export const useUserStore = defineStore('user', () => {
       })
 
       setUserLoggedIn(true)
+      setUserId(uid)
     } catch (error) {
       console.error('Error during registration:', error)
     }
@@ -63,6 +69,7 @@ export const useUserStore = defineStore('user', () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
       setUserLoggedIn(true)
+      setUserId(userCredential.user.uid)
       return userCredential
     } catch (error) {
       console.error('Error during authentication:', error)
@@ -82,6 +89,7 @@ export const useUserStore = defineStore('user', () => {
   return {
     userLoggedIn,
     setUserLoggedIn,
+    setUserId,
     toggleUserLoggedIn,
     register,
     getUserDocument,

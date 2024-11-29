@@ -3,43 +3,9 @@
   <section class="container mx-auto mt-6">
     <div class="md:grid md:grid-cols-3 md:gap-4">
       <div class="col-span-1">
-        <div class="relative flex flex-col bg-white border border-gray-200 rounded">
-          <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
-            <span class="card-title">Upload</span>
-            <i class="float-right text-2xl text-green-400 fas fa-upload"></i>
-          </div>
-          <div class="p-6">
-            <!-- Upload Dropbox -->
-            <div
-              class="w-full px-10 py-20 text-center text-gray-400 transition duration-500 border border-gray-400 border-dashed rounded cursor-pointer hover:text-white hover:bg-green-400 hover:border-green-400 hover:border-solid"
-            >
-              <h5>Drop your files here</h5>
-            </div>
-            <hr class="my-6" />
-            <!-- Progess Bars -->
-            <div class="mb-4">
-              <!-- File Name -->
-              <div class="text-sm font-bold">Just another song.mp3</div>
-              <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-                <!-- Inner Progress Bar -->
-                <div class="transition-all bg-blue-400 progress-bar" style="width: 75%"></div>
-              </div>
-            </div>
-            <div class="mb-4">
-              <div class="text-sm font-bold">Just another song.mp3</div>
-              <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-                <div class="transition-all bg-blue-400 progress-bar" style="width: 35%"></div>
-              </div>
-            </div>
-            <div class="mb-4">
-              <div class="text-sm font-bold">Just another song.mp3</div>
-              <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-                <div class="transition-all bg-blue-400 progress-bar" style="width: 55%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <UploadMusic @song-uploaded="addSong" />
       </div>
+
       <div class="col-span-2">
         <div class="relative flex flex-col bg-white border border-gray-200 rounded">
           <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
@@ -48,86 +14,14 @@
           </div>
           <div class="p-6">
             <!-- Composition Items -->
-            <div class="p-3 mb-4 border border-gray-200 rounded">
-              <div>
-                <h4 class="inline-block text-2xl font-bold">Song Name</h4>
-                <button class="float-right px-2 py-1 ml-1 text-sm text-white bg-red-600 rounded">
-                  <i class="fa fa-times"></i>
-                </button>
-                <button class="float-right px-2 py-1 ml-1 text-sm text-white bg-blue-600 rounded">
-                  <i class="fa fa-pencil-alt"></i>
-                </button>
-              </div>
-              <div>
-                <form>
-                  <div class="mb-3">
-                    <label class="inline-block mb-2">Song Title</label>
-                    <input
-                      type="text"
-                      class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                      placeholder="Enter Song Title"
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <label class="inline-block mb-2">Genre</label>
-                    <input
-                      type="text"
-                      class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                      placeholder="Enter Genre"
-                    />
-                  </div>
-                  <button type="submit" class="py-1.5 px-3 rounded text-white bg-green-600">
-                    Submit
-                  </button>
-                  <button type="button" class="py-1.5 px-3 rounded text-white bg-gray-600">
-                    Go Back
-                  </button>
-                </form>
-              </div>
-            </div>
-            <div class="p-3 mb-4 border border-gray-200 rounded">
-              <div>
-                <h4 class="inline-block text-2xl font-bold">Song Name</h4>
-                <button class="float-right px-2 py-1 ml-1 text-sm text-white bg-red-600 rounded">
-                  <i class="fa fa-times"></i>
-                </button>
-                <button class="float-right px-2 py-1 ml-1 text-sm text-white bg-blue-600 rounded">
-                  <i class="fa fa-pencil-alt"></i>
-                </button>
-              </div>
-            </div>
-            <div class="p-3 mb-4 border border-gray-200 rounded">
-              <div>
-                <h4 class="inline-block text-2xl font-bold">Song Name</h4>
-                <button class="float-right px-2 py-1 ml-1 text-sm text-white bg-red-600 rounded">
-                  <i class="fa fa-times"></i>
-                </button>
-                <button class="float-right px-2 py-1 ml-1 text-sm text-white bg-blue-600 rounded">
-                  <i class="fa fa-pencil-alt"></i>
-                </button>
-              </div>
-            </div>
-            <div class="p-3 mb-4 border border-gray-200 rounded">
-              <div>
-                <h4 class="inline-block text-2xl font-bold">Song Name</h4>
-                <button class="float-right px-2 py-1 ml-1 text-sm text-white bg-red-600 rounded">
-                  <i class="fa fa-times"></i>
-                </button>
-                <button class="float-right px-2 py-1 ml-1 text-sm text-white bg-blue-600 rounded">
-                  <i class="fa fa-pencil-alt"></i>
-                </button>
-              </div>
-            </div>
-            <div class="p-3 mb-4 border border-gray-200 rounded">
-              <div>
-                <h4 class="inline-block text-2xl font-bold">Song Name</h4>
-                <button class="float-right px-2 py-1 ml-1 text-sm text-white bg-red-600 rounded">
-                  <i class="fa fa-times"></i>
-                </button>
-                <button class="float-right px-2 py-1 ml-1 text-sm text-white bg-blue-600 rounded">
-                  <i class="fa fa-pencil-alt"></i>
-                </button>
-              </div>
+            <div v-for="song in songs" :key="song.id">
+              <CompositionItem
+                :song="song"
+                @update-song="updateSong"
+                @delete-song="deleteSong"
+                :updateUnsavedFlag="updateUnsavedFlag"
+              />
+              <div v-if="pageLoading"><i class="fa-solid fa-loader"></i></div>
             </div>
           </div>
         </div>
@@ -136,6 +30,73 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import UploadMusic from '@/components/UploadMusic.vue'
+import CompositionItem from '@/components/CompositionItem.vue'
+import { ref, onMounted } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
+import { songsCollection, auth } from '@/includes/firebase'
+import { query, where, getDocs } from 'firebase/firestore'
+
+const songs = ref([])
+const pageLoading = ref(false)
+
+const updateSong = (updatedSong) => {
+  const songIndex = songs.value.findIndex((song) => song.id === updatedSong.id)
+  if (songIndex !== -1) {
+    songs.value[songIndex].modified_name = updatedSong.modified_name
+    songs.value[songIndex].genre = updatedSong.genre
+  }
+}
+
+const addSong = (newSong) => {
+  songs.value.push(newSong)
+}
+
+onMounted(async () => {
+  const user = auth.currentUser
+  //console.log('User ID:', user.uid)
+  if (!user || !user.uid) {
+    console.error('User is not authenticated')
+    return
+  }
+  pageLoading.value = true
+  try {
+    const q = query(songsCollection, where('uid', '==', user.uid))
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+      songs.value.push({ id: doc.id, ...doc.data() })
+    })
+  } catch (error) {
+    console.error('Error fetching songs:', error)
+  }
+  pageLoading.value = false
+})
+
+const deleteSong = (id) => {
+  const songIndex = songs.value.findIndex((song) => song.id === id)
+  if (songIndex !== -1) {
+    songs.value.splice(songIndex, 1)
+  }
+}
+
+const unsavedFlag = ref(false)
+
+const updateUnsavedFlag = (value) => {
+  unsavedFlag.value = value
+}
+onBeforeRouteLeave((to, from, next) => {
+  if (unsavedFlag.value) {
+    const answer = window.confirm('You have unsaved changes. Are you sure you want to leave?')
+    if (answer) {
+      next()
+    } else {
+      next(false)
+    }
+  } else {
+    next()
+  }
+})
+</script>
 
 <style></style>
