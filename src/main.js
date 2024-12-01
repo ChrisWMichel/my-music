@@ -6,6 +6,8 @@ import router from './router'
 import validation from './includes/validation'
 import { db, auth } from './includes/firebase'
 
+//import 'materialize-css/dist/css/materialize.min.css'
+//import 'materialize-css/dist/js/materialize.min.js'
 import './assets/tailwind.css'
 import './assets/base.css'
 import './assets/main.css'
