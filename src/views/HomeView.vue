@@ -32,6 +32,9 @@
         <i class="float-right text-xl text-green-400 fa fa-headphones-alt"></i>
       </div>
       <!-- Playlist -->
+      <div v-show="loading" class="flex items-center justify-center h-64">
+        <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+      </div>
       <div>
         <ol id="playlist">
           <songItem v-for="song in songs" :key="song.id" :song="song" />

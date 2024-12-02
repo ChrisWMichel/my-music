@@ -3,6 +3,7 @@ import { useUserStore } from '@/stores/userStore'
 import Home from '@/views/HomeView.vue'
 import About from '@/views/AboutView.vue'
 import Manage from '@/views/ManageView.vue'
+import Song from '@/views/SongView.vue'
 
 const routes = [
   {
@@ -14,6 +15,11 @@ const routes = [
     path: '/about',
     name: 'about',
     component: About,
+  },
+  {
+    name: 'song',
+    path: '/song/:id',
+    component: Song,
   },
   {
     path: '/manage',
