@@ -13,15 +13,19 @@
             <i class="float-right text-2xl text-green-400 fa fa-compact-disc"></i>
           </div>
           <div class="p-6">
+            <div v-if="pageLoading" class="flex items-center justify-center h-64">
+              <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+            </div>
             <!-- Composition Items -->
-            <div v-for="song in songs" :key="song.id">
-              <CompositionItem
-                :song="song"
-                @update-song="updateSong"
-                @delete-song="deleteSong"
-                :updateUnsavedFlag="updateUnsavedFlag"
-              />
-              <div v-if="pageLoading"><i class="fa-solid fa-loader"></i></div>
+            <div v-else>
+              <div v-for="song in songs" :key="song.id">
+                <CompositionItem
+                  :song="song"
+                  @update-song="updateSong"
+                  @delete-song="deleteSong"
+                  :updateUnsavedFlag="updateUnsavedFlag"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -39,7 +43,7 @@ import { songsCollection, auth } from '@/includes/firebase'
 import { query, where, getDocs } from 'firebase/firestore'
 
 const songs = ref([])
-const pageLoading = ref(false)
+const pageLoading = ref(true)
 
 const updateSong = (updatedSong) => {
   const songIndex = songs.value.findIndex((song) => song.id === updatedSong.id)
@@ -69,8 +73,9 @@ onMounted(async () => {
     })
   } catch (error) {
     console.error('Error fetching songs:', error)
+  } finally {
+    pageLoading.value = false
   }
-  pageLoading.value = false
 })
 
 const deleteSong = (id) => {

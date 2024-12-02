@@ -17,6 +17,7 @@
     "@vee-validate/rules": "^4.14.7",
     "autoprefixer": "^10.4.20",
     "firebase": "^11.0.2",
+    "materialize-css": "^1.0.0",
     "pinia": "^2.2.6",
     "postcss": "^8.4.49",
     "vee-validate": "^4.14.7",

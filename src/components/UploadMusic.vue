@@ -74,7 +74,7 @@ onBeforeUnmount(() => {
 })
 
 const upload = (event) => {
-  const droppedFiles = event.dataTransfer ? [...event.dataTransfer.files] : [...event.target.files]
+  const droppedFiles = event.dataTransfer ? event.dataTransfer.files : event.target.files
   for (const file of droppedFiles) {
     if (file.type !== 'audio/mpeg' || file.size >= 10 * 1024 * 1024) {
       console.error('File does not meet content type or size requirements')
@@ -120,9 +120,10 @@ const upload = (event) => {
       },
       async () => {
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref)
-        //console.log('File available at', downloadURL)
+        console.log('File available at', downloadURL)
 
         const song = {
+          created_at: new Date(),
           uid: auth.currentUser.uid,
           url: downloadURL,
           display_name: auth.currentUser.displayName,
@@ -132,14 +133,12 @@ const upload = (event) => {
           comment_count: 0,
         }
 
-        await addDoc(songsCollection, song)
+        const docRef = await addDoc(songsCollection, song)
         const fileIndex = files.value.findIndex((f) => f.name === file.name)
         files.value[fileIndex].variant = 'bg-green-400'
         files.value[fileIndex].icon = 'fas fa-check-circle'
         files.value[fileIndex].text_class = 'text-green-600'
 
-        const docRef = await addDoc(songsCollection, song)
-        //console.log('Song uploaded:', docRef.id)
         emit('song-uploaded', { id: docRef.id, ...song })
       },
     )
