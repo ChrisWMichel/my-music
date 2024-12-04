@@ -120,7 +120,7 @@ const upload = (event) => {
       },
       async () => {
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref)
-        console.log('File available at', downloadURL)
+        //console.log('File available at', downloadURL)
 
         const song = {
           created_at: new Date(),

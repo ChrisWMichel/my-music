@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main>
     <!-- Music Header -->
     <section class="relative w-full mb-8 text-center text-white py-14">
       <div
@@ -9,6 +9,7 @@
       <div class="container flex items-center mx-auto">
         <!-- Play/Pause Button -->
         <button
+          @click.prevent="!playerStore.playing ? playSong() : playerStore.toggleAudio()"
           type="button"
           class="z-50 w-24 h-24 text-3xl text-black bg-white rounded-full focus:outline-none"
         >
@@ -22,7 +23,7 @@
       </div>
     </section>
     <!-- Form -->
-    <section class="container mx-auto mt-6">
+    <section class="container mx-auto mt-6" id="comments">
       <div class="relative flex flex-col bg-white border border-gray-200 rounded">
         <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
           <!-- Comment Count -->
@@ -85,18 +86,20 @@
         <p>{{ comment.content }}</p>
       </li>
     </ul>
-  </div>
+  </main>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { doc, getDoc, addDoc, getDocs, query, where } from 'firebase/firestore'
-import { songsCollection, commentsCollection } from '@/includes/firebase'
+import { doc, getDoc, addDoc, getDocs, query, where, runTransaction } from 'firebase/firestore'
+import { db, songsCollection, commentsCollection } from '@/includes/firebase'
 import { auth } from '@/includes/firebase'
 import { Form, Field, ErrorMessage } from 'vee-validate'
 import { useUserStore } from '@/stores/userStore'
+import { usePlayerStore } from '@/stores/playerStore'
 
+const playerStore = usePlayerStore()
 const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
@@ -111,6 +114,7 @@ const comment_show_alert = ref(false)
 const comment_alert_variant = ref('bg-blue-500')
 const comment_alert_text = ref('Adding comment...')
 const allComments = ref([])
+const commentCount = ref(0)
 const sort = ref(1)
 
 const fetchSong = async (id) => {
@@ -135,20 +139,34 @@ const addComment = async (value, { resetForm }) => {
   comment_alert_text.value = 'Adding comment...'
 
   const comment = {
-    //content: commentContent.value,
     content: value.comment,
-    created_at: new Date().toString(),
+    created_at: new Date().toISOString(),
     sid: route.params.id,
     name: auth.currentUser.displayName,
     uid: auth.currentUser.uid,
   }
 
   try {
-    await addDoc(commentsCollection, comment)
+    await runTransaction(db, async (transaction) => {
+      const songDocRef = doc(songsCollection, route.params.id)
+      const songDoc = await transaction.get(songDocRef)
+
+      if (!songDoc.exists()) {
+        throw new Error('Song does not exist!')
+      }
+
+      // Add the comment
+      await addDoc(commentsCollection, comment)
+
+      // Update the comment_count field
+      const newCommentCount = (songDoc.data().comment_count || 0) + 1
+      transaction.update(songDocRef, { comment_count: newCommentCount })
+    })
+
     comment_alert_variant.value = 'bg-green-500'
     comment_alert_text.value = 'Comment added successfully!'
     commentContent.value = ''
-    await getComments(songId)
+    await getComments(songId) // Ensure getComments is awaited
     resetForm()
   } catch (error) {
     console.error('Error adding comment:', error)
@@ -156,8 +174,6 @@ const addComment = async (value, { resetForm }) => {
     comment_alert_text.value = 'Error adding comment.'
   } finally {
     comment_in_submission.value = false
-
-    resetForm()
   }
 }
 
@@ -166,6 +182,8 @@ const getComments = async (songId) => {
     const q = query(commentsCollection, where('sid', '==', songId))
     const querySnapshot = await getDocs(q)
     allComments.value = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+    commentCount.value = querySnapshot.size
+    //playerStore.commentCount = querySnapshot.size
   } catch (error) {
     console.error('Error fetching comments:', error)
   }
@@ -197,6 +215,10 @@ watch(sort, (newVal) => {
   if (newVal === route.query.sort) return
   router.push({ query: { sort: newVal } })
 })
+
+const playSong = () => {
+  playerStore.newSong(song.value)
+}
 
 onMounted(async () => {
   fetchSong(songId)
