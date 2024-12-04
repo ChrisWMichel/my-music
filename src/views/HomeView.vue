@@ -1,48 +1,49 @@
 <template>
-  <!-- Introduction -->
-  <section class="relative py-20 mb-8 text-center text-white">
-    <div
-      class="absolute inset-0 w-full h-full bg-contain introduction-bg"
-      style="background-image: url(assets/img/header.png)"
-    ></div>
-    <div class="container mx-auto">
-      <div class="text-white main-header-content">
-        <h1 class="mb-5 text-5xl font-bold">Listen to Great Music!</h1>
-        <p class="w-full mx-auto md:w-8/12">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et dolor mollis, congue
-          augue non, venenatis elit. Nunc justo eros, suscipit ac aliquet imperdiet, venenatis et
-          sapien. Duis sed magna pulvinar, fringilla lorem eget, ullamcorper urna.
-        </p>
+  <main>
+    <!-- Introduction -->
+    <section class="relative py-20 mb-8 text-center text-white">
+      <div
+        class="absolute inset-0 w-full h-full bg-contain introduction-bg"
+        style="background-image: url(assets/img/header.png)"
+      ></div>
+      <div class="container mx-auto">
+        <div class="text-white main-header-content">
+          <h1 class="mb-5 text-5xl font-bold">Listen to Great Music!</h1>
+          <p class="w-full mx-auto text-2xl md:w-8/12">
+            I would encourage you to register and login to the app so that you can appreciate the
+            full functionality this app has to offer.
+          </p>
+        </div>
       </div>
-    </div>
 
-    <img
-      class="relative block w-auto max-w-full mx-auto mt-5 -mb-20"
-      src="../assets/img/introduction-music.png"
-      alt="Music"
-    />
-  </section>
+      <img
+        class="relative block w-auto max-w-full mx-auto mt-5 -mb-20"
+        src="../assets/img/introduction-music.png"
+        alt="Music"
+      />
+    </section>
 
-  <!-- Main Content -->
-  <section class="container mx-auto">
-    <div class="relative flex flex-col bg-white border border-gray-200 rounded">
-      <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
-        <span class="card-title">Songs</span>
-        <!-- Icon -->
-        <i class="float-right text-xl text-green-400 fa fa-headphones-alt"></i>
+    <!-- Main Content -->
+    <section class="container mx-auto">
+      <div class="relative flex flex-col bg-white border border-gray-200 rounded">
+        <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
+          <span class="card-title">Songs</span>
+          <!-- Icon -->
+          <i class="float-right text-xl text-green-400 fa fa-headphones-alt"></i>
+        </div>
+        <!-- Playlist -->
+        <div v-show="loading" class="flex items-center justify-center h-64">
+          <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+        </div>
+        <div>
+          <ol id="playlist">
+            <songItem v-for="song in songs" :key="song.id" :song="song" />
+          </ol>
+        </div>
+        <!-- .. end Playlist -->
       </div>
-      <!-- Playlist -->
-      <div v-show="loading" class="flex items-center justify-center h-64">
-        <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-      </div>
-      <div>
-        <ol id="playlist">
-          <songItem v-for="song in songs" :key="song.id" :song="song" />
-        </ol>
-      </div>
-      <!-- .. end Playlist -->
-    </div>
-  </section>
+    </section>
+  </main>
 </template>
 
 <script setup>

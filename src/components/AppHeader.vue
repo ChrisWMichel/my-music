@@ -1,33 +1,30 @@
 <template>
   <header id="header" class="bg-gray-700">
-    <nav class="container flex items-center justify-start px-4 py-5 mx-auto">
-      <router-link
-        class="mr-4 text-2xl font-bold text-white uppercase"
-        :to="{ name: 'home' }"
-        active-class="no-active"
-        >Music App</router-link
-      >
-
-      <div class="flex items-center flex-grow">
-        <!-- Primary Navigation -->
-        <ul class="flex flex-row mt-1">
-          <li>
-            <router-link class="px-2 text-white" :to="{ name: 'about' }">About</router-link>
-          </li>
-          <li v-if="!userStore.userLoggedIn">
-            <a class="px-2 text-white" href="#" @click.prevent="modalStore.toggle"
-              >Login / Register</a
-            >
-          </li>
-          <template v-else>
-            <li>
-              <router-link class="px-2 text-white" :to="{ name: 'manage' }">Manage</router-link>
-            </li>
-            <li>
-              <a class="px-2 text-white" href="#" @click="signOut">Logout</a>
-            </li>
-          </template>
-        </ul>
+    <nav class="container flex items-center justify-between px-4 py-5 mx-auto">
+      <div class="text-lg font-semibold text-white">
+        <router-link
+          class="mr-4 text-2xl font-bold text-white uppercase"
+          :to="{ name: 'home' }"
+          active-class="no-active"
+        >
+          Music App
+        </router-link>
+        <router-link class="px-2 text-white" :to="{ name: 'about' }">About</router-link>
+        <!-- <div v-if="userStore.userLoggedIn"> -->
+        <router-link v-if="userStore.userLoggedIn" class="px-2 text-white" :to="{ name: 'manage' }"
+          >Manage</router-link
+        >
+        <!-- </div> -->
+      </div>
+      <div class="flex items-center space-x-4">
+        <div v-if="!userStore.userLoggedIn">
+          <a class="px-2 text-white" href="#" @click.prevent="modalStore.toggle"
+            >Login / Register</a
+          >
+        </div>
+        <div v-else>
+          <a class="px-2 text-white" href="#" @click="signOut">Logout</a>
+        </div>
       </div>
     </nav>
   </header>
