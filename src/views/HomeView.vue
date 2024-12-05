@@ -26,10 +26,11 @@
     <!-- Main Content -->
     <section class="container mx-auto">
       <div class="relative flex flex-col bg-white border border-gray-200 rounded">
-        <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
+        <div
+          class="px-6 pt-6 pb-5 font-bold border-b border-gray-200"
+          v-icon-secondary="{ icon: 'headphones-alt', right: true }"
+        >
           <span class="card-title">Songs</span>
-          <!-- Icon -->
-          <i class="float-right text-xl text-green-400 fa fa-headphones-alt"></i>
         </div>
         <!-- Playlist -->
         <div v-show="loading" class="flex items-center justify-center h-64">
@@ -48,9 +49,10 @@
 
 <script setup>
 import songItem from '@/components/songItem.vue'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue'
 import { getDocs, query, orderBy, startAfter, limit } from 'firebase/firestore'
 import { songsCollection } from '@/includes/firebase'
+import iconSecondary from '@/directives/icon-secondary'
 
 const songs = ref([])
 const maxPerPage = 5
@@ -99,6 +101,10 @@ const getSongs = async () => {
     loading.value = false
   }
 }
+
+// Register the directive locally
+const app = getCurrentInstance().appContext.app
+app.directive('icon-secondary', iconSecondary)
 </script>
 
 <style></style>
