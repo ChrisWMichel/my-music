@@ -65,10 +65,9 @@
       <div class="max-w-2xl mx-auto lg:mx-0">
         <h2 class="text-5xl font-semibold tracking-tight text-white sm:text-7xl">About This App</h2>
         <p class="mt-8 text-lg font-medium text-gray-300 text-pretty sm:text-xl/8">
-          First off, this app is currently a work in progress. It is a music app that allows you to
-          listen to music and comment on songs. It is built with Vue 3 and Tailwind CSS. The app
-          uses Firebase for authentication and Firestore for the database. The app is styled with
-          Tailwind CSS and uses the FontAwesome icon library.
+          It is a music app that allows you to listen to music and comment on songs. It is built
+          with Vue 3 and Tailwind CSS. The app uses Firebase for authentication and Firestore for
+          the database. The app is styled with Tailwind CSS and uses the FontAwesome icon library.
         </p>
       </div>
       <p class="mt-8 text-lg font-medium text-gray-300 text-pretty sm:text-xl/8">
