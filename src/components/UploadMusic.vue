@@ -88,6 +88,18 @@ const upload = (event) => {
       continue
     }
 
+    if (!navigator.onLine) {
+      console.error('You are offline')
+      files.value.push({
+        name: file.name,
+        progress: 0,
+        variant: 'bg-red-400',
+        icon: 'fas fa-exclamation-circle',
+        text_class: 'text-red-600',
+      })
+      continue
+    }
+
     const songRef = storageRef(storage, `songs/${file.name}`)
     const uploadTask = uploadBytesResumable(songRef, file)
 

@@ -87,12 +87,13 @@
       <a
         href="https://github.com/ChrisWMichel/my-music"
         target="_blank"
-        class="mt-8 text-lg font-medium text-gray-300 text-pretty sm:text-xl/8"
+        class="mt-8 text-lg font-medium text-blue-300 text-pretty sm:text-xl/8"
         >View the code on GitHub</a
       >
       <p class="mt-8 text-lg font-medium text-gray-300 text-pretty sm:text-xl/8">
         Side note: Want to know how much time I spend in Udemy courses? Check out what they sent me,
         <a
+          class="text-blue-300"
           href="https://mi.udemy.com/p/rp/40eebe8e432ee0a5.png?mi_u=61e958adf614f60d2e6d2037&Learner_Type=Learning%20Legend&Learner_Type_prefix=I%27m%20a&minutes=Total%20minutes%20learned:&XXX=7980&Content-5_7-LT_img_float-RT_txt_subheadline-copy_2_A=That%27s%20more%20than&Content-5_7-LT_img_float-RT_txt_subheadline-copy_2_B=of%20other%20learners.&percent_XX_value=99%"
           target="_blank"
           >Click Here!</a

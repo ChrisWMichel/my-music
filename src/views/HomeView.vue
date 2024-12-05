@@ -104,7 +104,9 @@ const getSongs = async () => {
 
 // Register the directive locally
 const app = getCurrentInstance().appContext.app
-app.directive('icon-secondary', iconSecondary)
+if (!app._context.directives['icon-secondary']) {
+  app.directive('icon-secondary', iconSecondary)
+}
 </script>
 
 <style></style>

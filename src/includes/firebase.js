@@ -1,5 +1,10 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore, collection } from 'firebase/firestore'
+import {
+  collection,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+  initializeFirestore,
+} from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
 import { getStorage } from 'firebase/storage'
 
@@ -16,8 +21,15 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
 
+// Initialize Firestore with offline persistence
+const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager(),
+  }),
+})
+
 // Initialize Firestore
-const db = getFirestore(app)
+//const db = getFirestore(app)
 
 // Initialize Firebase Auth
 const auth = getAuth(app)

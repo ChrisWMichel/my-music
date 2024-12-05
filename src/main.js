@@ -6,10 +6,13 @@ import router from './router'
 import validation from './includes/validation'
 import { db, auth } from './includes/firebase'
 import Icon from './directives/icon'
+import { registerSW } from 'virtual:pwa-register'
 
 import './assets/tailwind.css'
 import './assets/base.css'
 import './assets/main.css'
+
+registerSW({ immediate: true })
 
 let app
 auth.onAuthStateChanged(() => {
