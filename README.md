@@ -10,5 +10,5 @@
     # Howler (music player extension)
     # Firebase
     # Tailwind
-
+    # Written using composition api
 ```
